@@ -9,6 +9,8 @@ import serviceInterfaceMethods.JavaFileMethodsServiceInterfaceMethods;
 import utility.ApiResponse;
 import utility.Response;
 
+import java.util.Optional;
+
 @Service
 public class JavaFileMethodsServiceImplementation implements JavaFileMethodsServiceInterfaceMethods {
 
@@ -56,6 +58,22 @@ public class JavaFileMethodsServiceImplementation implements JavaFileMethodsServ
     @Override
     public Response fileUpdateMethod(JavaFileMethods javaFileMethods) {
         Response response = new Response();
+        try{
+            Optional<JavaFileMethods> findByFileId = javaFileMethodsRepository.findById(javaFileMethods.getFileId());
+            JavaFileMethods existingRecord = findByFileId.get();
+            existingRecord.setFileMethodName(javaFileMethods.getFileMethodName());
+            existingRecord.setMethodDescription(javaFileMethods.getMethodDescription());
+            existingRecord.setMethodResponse(javaFileMethods.getMethodResponse());
+
+            javaFileMethodsRepository.save(existingRecord);
+
+            response.setId(javaFileMethods.getFileId());
+            response.setData(existingRecord);
+            response.setStatus(ApiResponse.SUCCESS_STATUS);
+            response.setMessage(ApiResponse.UPDATE_SUCCESS_MESSAGE);
+        }catch(Throwable ignored){
+
+        }
         return response;
     }
 
