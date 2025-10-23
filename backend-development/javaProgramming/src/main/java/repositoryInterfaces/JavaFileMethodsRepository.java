@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface JavaFileMethodsRepository extends JpaRepository<JavaFileMethods, Integer> {
+
+    JavaFileMethods findByFileMethodName(String fileMethodName);
 }
